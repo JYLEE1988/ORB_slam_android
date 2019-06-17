@@ -15,6 +15,7 @@ android {
 
         ndk {
             moduleName "lapack"
+            abiFilters 'armeabi-v7a'
         }
     }
 

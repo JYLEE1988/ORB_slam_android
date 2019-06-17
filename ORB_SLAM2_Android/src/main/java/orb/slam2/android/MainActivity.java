@@ -3,9 +3,11 @@ package orb.slam2.android;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.AssetManager;
 import android.os.Environment;
 import android.text.TextUtils;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -18,10 +20,16 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View.OnTouchListener;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
 
 public class MainActivity extends Activity implements OnClickListener{
-    private String VOCPath = "/storage/emulated/0/SLAM/VOC/ORBvoc.txt";
-    private String TUMPath = "/storage/emulated/0/SLAM/Calibration/List.yaml";
+    private String VOCPath = "ORBvoc.txt";
+    private String TUMPath = "List.yaml";
 	Button datasetMode,  testMode;
     
     Button ChooseCalibration,ChooseVOC;
@@ -75,8 +83,54 @@ public class MainActivity extends Activity implements OnClickListener{
         };
         View rootView = findViewById(R.id.FrameLayout1);
         rootView.setOnTouchListener(rootListener);
+
+        copyAssets();
     }
 
+    private void copyAssets() {
+        AssetManager assetManager = getAssets();
+        String[] files = null;
+        try {
+            files = assetManager.list("");
+        } catch (IOException e) {
+            Log.e("tag", "Failed to get asset file list.", e);
+        }
+        if (files != null) for (String filename : files) {
+            InputStream in = null;
+            OutputStream out = null;
+            try {
+                in = assetManager.open(filename);
+                File outFile = new File(getExternalFilesDir(null), filename);
+                out = new FileOutputStream(outFile);
+                copyFile(in, out);
+            } catch(IOException e) {
+                Log.e("tag", "Failed to copy asset file: " + filename, e);
+            }
+            finally {
+                if (in != null) {
+                    try {
+                        in.close();
+                    } catch (IOException e) {
+                        // NOOP
+                    }
+                }
+                if (out != null) {
+                    try {
+                        out.close();
+                    } catch (IOException e) {
+                        // NOOP
+                    }
+                }
+            }
+        }
+    }
+    private void copyFile(InputStream in, OutputStream out) throws IOException {
+        byte[] buffer = new byte[1024];
+        int read;
+        while((read = in.read(buffer)) != -1){
+            out.write(buffer, 0, read);
+        }
+    }
 
 
     // change on April 27th ,li
@@ -95,9 +149,10 @@ public class MainActivity extends Activity implements OnClickListener{
 		case R.id.test_mode:
 			//Toast.makeText(MainActivity.this, "on the way...", Toast.LENGTH_LONG).show();
 			// startActivity(new Intent(MainActivity.this,TestModeActivity.class));
+
             Bundle bundle=new Bundle();
-            bundle.putString("voc",VOCPath );
-            bundle.putString("calibration",TUMPath );
+            bundle.putString("voc", new File(getExternalFilesDir(null), VOCPath).getPath());
+            bundle.putString("calibration",new File(getExternalFilesDir(null), TUMPath).getPath() );
             Intent intent =new Intent(MainActivity.this,ORBSLAMForTestActivity.class);
             intent.putExtras(bundle);
             startActivity(intent);

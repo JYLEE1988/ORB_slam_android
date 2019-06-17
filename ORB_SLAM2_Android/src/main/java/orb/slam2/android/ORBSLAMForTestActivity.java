@@ -220,8 +220,7 @@ public class ORBSLAMForTestActivity extends Activity implements
                     // TODO Auto-generated method stub
                     OrbNdkHelper.initSystemWithParameters(vocPath,
                             calibrationPath);
-                    Log.e("information==========>",
-                            "init has been finished!");
+                    Log.e("information==========>", "init has been finished!");
                     myHandler.sendEmptyMessage(INIT_FINISHED);
                 }
             }).start();
