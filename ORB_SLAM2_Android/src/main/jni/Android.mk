@@ -1,6 +1,6 @@
 LOCAL_PATH:= $(call my-dir)
 
-#############DLib模块##################
+#############DLib 모듈 ##################
 
 include $(CLEAR_VARS)
 MAINDIR:= $(LOCAL_PATH)
@@ -19,19 +19,19 @@ LOCAL_PATH := $(MAINDIR)
 include $(BUILD_SHARED_LIBRARY)
 ######################################
 
-#############DLib模块##################
+#############DLib 모듈 ##################
 include $(CLEAR_VARS)
 MAIN_DIR:=$(LOCAL_PATH)
 OPENCV_LIB_TYPE:=STATIC
 ifeq ("$(wildcard $(OPENCV_MK_PATH))","")  
 #try to load OpenCV.mk from default install location  
-include ././AndroidStudioProjects/OpenCV-2.4.9-android-sdk/sdk/native/jni/OpenCV.mk
+include $(LOCAL_PATH)/../../../../../../opencv/OpenCV-2.4.9-android-sdk/sdk/native/jni/OpenCV.mk
 include $(OPENCV_MK_PATH)  
 endif 
 LOCAL_PATH:=$(MAIN_DIR)
 LOCAL_MODULE:=DLib
 
-####################源文件部分######################################
+####################소스 파일 섹션######################################
 LOCAL_C_INCLUDES+=$(LOCAL_PATH)/Thirdparty/DBoW2/DLib/include/DUtils
 FILE_LIST:=$(wildcard $(LOCAL_PATH)/Thirdparty/DBoW2/DLib/src/DUtils/*.cpp)
 LOCAL_SRC_FILES+=$(FILE_LIST:$(LOCAL_PATH)/%=%)
@@ -44,7 +44,7 @@ LOCAL_SRC_FILES+=$(FILE_LIST:$(LOCAL_PATH)/%=%)
 #FILE_LIST:=$(wildcard $(LOCAL_PATH)/Thirdparty/DBoW2/DLib/src/DVision/*.cpp)
 #LOCAL_SRC_FILES+=$(FILE_LIST:$(LOCAL_PATH)/%=%)
 
-################BOOST#####################部分
+################BOOST 모듈 #####################
 BOOST_VERSION      := 1_49
 PROJECT_ROOT       := $(LOCAL_PATH)
 BOOST_INCLUDE_PATH := $(PROJECT_ROOT)/Thirdparty/Boost/include/boost-1_49
@@ -61,19 +61,19 @@ LOCAL_CPPFLAGS += -D__cplusplus=201103L
 #LOCAL_EXPORT_C_INCLUDES+=$(LOCAL_PATH)/Thirdparty/DBoW2/DLib/include/DUtilsCV
 LOCAL_EXPORT_C_INCLUDES+=$(LOCAL_PATH)/Thirdparty/DBoW2/DLib/include
 LOCAL_EXPORT_C_INCLUDES+=$(BOOST_INCLUDE_PATH)
-LOCAL_EXPORT_C_INCLUDES+=././OpenCV-2.4.9-android-sdk/sdk/native/jni/include
+LOCAL_EXPORT_C_INCLUDES+=$(LOCAL_PATH)/../../../../../../OpenCV-2.4.9-android-sdk/sdk/native/jni/include
 LOCAL_PATH:=$(MAIN_DIR)
 include $(BUILD_SHARED_LIBRARY)
 ###############################################################
 
-##############DBoW2模块#########################################
+##############DBoW2 모듈 #########################################
 include $(CLEAR_VARS)
 MAIN_DIR:=$(LOCAL_PATH)
 
 OPENCV_LIB_TYPE:=STATIC
 ifeq ("$(wildcard $(OPENCV_MK_PATH))","")  
 #try to load OpenCV.mk from default install location  
-include ././AndroidStudioProjects/ORB_SLAM2_Android_Mac/OpenCV-2.4.9-android-sdk/sdk/native/jni/OpenCV.mk
+include $(LOCAL_PATH)/../../../../../../opencv/OpenCV-2.4.9-android-sdk/sdk/native/jni/OpenCV.mk
 else  
 include $(OPENCV_MK_PATH)  
 endif 
@@ -92,7 +92,7 @@ include $(BUILD_SHARED_LIBRARY)
 ###############################################################
 
 
-###################G2O模块##################################
+###################G2O 모듈 ##################################
 include $(CLEAR_VARS)
 MAIN_DIR:=$(LOCAL_PATH)
 LOCAL_C_INCLUDES+=$(LOCAL_PATH)/Thirdparty/g2o/g2o/core
@@ -122,7 +122,7 @@ LOCAL_PATH:=$(MAIN_DIR)
 include $(BUILD_SHARED_LIBRARY)
 ############################################################
 
-##############Pangolin模块##################################
+##############Pangolin 모듈 ##################################
 #include $(CLEAR_VARS)
 #MAIN_DIR:=$(LOCAL_PATH)
 #
@@ -181,13 +181,14 @@ include $(BUILD_SHARED_LIBRARY)
 #
 #include $(BUILD_SHARED_LIBRARY)
 
-##############ORB_SLAM2模块##################################
+##############ORB_SLAM2 모듈 ##################################
 include $(CLEAR_VARS)
 MAIN_DIR:=$(LOCAL_PATH)
 OPENCV_LIB_TYPE:=STATIC
 ifeq ("$(wildcard $(OPENCV_MK_PATH))","")  
 #try to load OpenCV.mk from default install location  
-include ././AndroidStudioProjects/OpenCV-2.4.9-android-sdk/sdk/native/jni/OpenCV.mk
+include $(LOCAL_PATH)/../../../../../../opencv/OpenCV-2.4.9-android-sdk/sdk/native/jni/OpenCV.mk
+
 else  
 include $(OPENCV_MK_PATH)  
 endif 
@@ -200,7 +201,7 @@ LOCAL_CPP_EXTENSION := .cc
 LOCAL_SHARED_LIBRARIES+=DBoW2
 LOCAL_SHARED_LIBRARIES+=DLib
 LOCAL_SHARED_LIBRARIES+=g2o
-LOCAL_SHARED_LIBRARIES+=pangolin
+#LOCAL_SHARED_LIBRARIES+=pangolin
 LOCAL_LDLIBS += -llog -landroid -lEGL -lGLESv1_CM 
 LOCAL_EXPORT_C_INCLUDES+=$(LOCAL_PATH)/ORB_SLAM2/include
 LOCAL_CPPFLAGS := -std=c++11 -pthread -frtti -fexceptions -ftemplate-backtrace-limit=0
@@ -209,14 +210,14 @@ LOCAL_PATH:=$(MAIN_DIR)
 include $(BUILD_SHARED_LIBRARY)
 ############################################################
 
-##############ORB_SLAM2 執行模块###############################
+##############ORB_SLAM2 실행모듈 ###############################
 include $(CLEAR_VARS)
 MAIN_DIR:=$(LOCAL_PATH)
 OPENCV_LIB_TYPE:=STATIC
 ifeq ("$(wildcard $(OPENCV_MK_PATH))","")  
 #try to load OpenCV.mk from default install location  
-include ././AndroidStudioProjects/OpenCV-2.4.9-android-sdk/sdk/native/jni/OpenCV.mk
-else  
+include $(LOCAL_PATH)/../../../../../../opencv/OpenCV-2.4.9-android-sdk/sdk/native/jni/OpenCV.mk
+else
 include $(OPENCV_MK_PATH)  
 endif 
 LOCAL_MODULE := ORB_SLAM2_EXCUTOR
